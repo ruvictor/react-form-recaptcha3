@@ -3,6 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import TextFied from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Recaptcha from 'react-google-invisible-recaptcha';
 
 export class Form extends Component {
 
@@ -19,8 +20,11 @@ export class Form extends Component {
         this.setState({[input]: e.target.value});
     }
 
-    sendMessage = e => {
-        e.preventDefault();
+    sendMessage = () => {
+        this.recaptcha.execute();
+    }
+
+    onResolved = () => {
         this.setState({messageSent: true})
         // Process Data //
         console.log(this.state);
@@ -62,6 +66,11 @@ export class Form extends Component {
                         label="Send"
                         style={StyleSheet.button}
                         onClick={this.sendMessage}
+                    />
+                    <Recaptcha
+                        ref={ ref => this.recaptcha = ref }
+                        sitekey="<sidekey>"
+                        onResolved={ this.onResolved }
                     />
                 </React.Fragment>
             </MuiThemeProvider>
